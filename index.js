@@ -30,6 +30,7 @@ app.post("/updateProfile", (req, res) => {
         return Users.getUser(userId).set({
             languages: Array.from(results[0]),
             restaurants: results[1].map(r => r.id),
+            gitUsername: gitUsername,
             name: username
         });
     })
