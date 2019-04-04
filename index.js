@@ -1,5 +1,5 @@
 const { app } = require("./express.js");
-const { getLanguages } = require("./github-helper.js");
+const { getLanguages,matchUsers } = require("./github-helper.js");
 const { Users } = require("./collections/users");
 const { getRestaurants } = require("./tenbis/index");
 var bodyParser = require('body-parser');
@@ -38,3 +38,5 @@ app.post("/updateProfile", (req, res) => {
         res.send("cool")
     })
 });
+
+matchUsers('QABItfq1u84qrOi1HbQx')
