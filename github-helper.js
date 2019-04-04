@@ -2,6 +2,8 @@ const fetch = require('node-fetch');
 const {Users} = require("./collections/users");
 
 function getLanguages(username) {
+    return Promise.resolve(["JavaScript", "PLpgSQL", "HTML", "Java"]);
+
     return fetch('https://api.github.com/users/' + username +'/repos')
         .then(res => res.json())
         .then(json => {
