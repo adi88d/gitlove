@@ -19,6 +19,7 @@
   "homepage": "https://github.com/adi88d/gitlove#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "firebase-admin": "^5.12.0"
+    "firebase-admin": "^5.12.0",
+    "node-fetch": "^2.3.0"
   }
 }
