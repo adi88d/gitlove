@@ -27,7 +27,7 @@ app.post("/updateProfile", (req, res) => {
         getLanguages(gitUsername),
         getRestaurants(tenBisEmail, tenBisPassword)
     ]).then(results => {
-        return Users.getUser(userId).set({
+        return Users.getUser(userId).update({
             languages: Array.from(results[0]),
             restaurants: results[1].map(r => r.id),
             gitUsername: gitUsername,
@@ -38,17 +38,3 @@ app.post("/updateProfile", (req, res) => {
         res.send("cool")
     })
 });
-// app.get("/filllanguage/:githubUsername/:userId", (req, res) => {
-//     return 
-//         .then(languages => {
-//             const user = Users.getUser(req.params.userId)
-//             user.set({
-//                 languages: [...languages]
-//             })
-//             .then(() => user.get())
-//             .then(user => {
-//                 res.send(user.data());
-//             })
-//             .catch(error => console.log(error));
-//         });
-// });
