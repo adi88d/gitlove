@@ -46,16 +46,20 @@ function getGithubApi(username) {
 
 async function matchUsers(userId) {
 
-    const userLang = Users.getUser(userId);
-    var lang = await userLang.get().then(res => {
-        return res.data().languages;
-    });
+    const userRef = Users.getUser(userId);
+
+    const user = await userRef.get();
+
+    var userLang = user.data().languages;
+
+    var userRest =  user.data().restaurants;
 
     var response = [];
     Users.getAll().get()
         .then(users => {
-            users.docs.filter(user => user.id != userId).forEach(user => {
-                var commonlanguages = lang.filter(value => {
+            users.docs.filter(user=> user.id != userId).forEach(user => {
+
+                var commonlanguages = userLang.filter(value => {
                     var languages = user.data().languages
 
                     if (languages && languages.includes(value)) {
@@ -64,15 +68,27 @@ async function matchUsers(userId) {
                     return false
                 });
 
+                var commonrestaurants = userRest.filter(value => {
+                    var restaurant = user.data().restaurants
+                    
+                    if(restaurant && restaurant.includes(value)){
+                        return true
+                    }
+                    return false       
+                });
                 response.push({
                     usedId: user.id,
-                    rank: commonlanguages.length,
-                    languages: commonlanguages
-                })
+                    rank: commonrestaurants.length + commonlanguages.length,
+                    resRank: commonrestaurants.length,
+                    langRank: commonlanguages.length,  
+                    restaurants:commonrestaurants,
+                    languages:commonlanguages,
+                }) 
             });
-            response.sort(function (a, b) {
-                return a.rank - b.rank;
-            });
+
+            response.sort(function(a, b) {
+                return b.rank - a.rank;
+              });
 
             console.log(response)
             return response;
