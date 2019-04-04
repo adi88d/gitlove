@@ -1,4 +1,4 @@
-const {db} = require("../firebase");
+const { db } = require("../firebase");
 
 class Users {
     static getUser(userId) {
@@ -6,8 +6,17 @@ class Users {
         return collection.doc(userId);
     }
 
-    static getAll(){
+    static getAll() {
         return db.collection('users');
+    }
+
+    static updateMatch(userId, matchedId) {
+        const user = this.getUser(userId);
+        const matches = user.matches || [];
+        if (matches.indexOf(matchedId) === -1) {
+            matches.push(matchedId);
+            user.update({ matches });
+        }
     }
 }
 
