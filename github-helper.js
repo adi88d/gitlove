@@ -1,24 +1,50 @@
 const fetch = require('node-fetch');
-const {Users} = require("./collections/users");
+const { Users } = require("./collections/users");
+const githubResponseMock = require('./github-response-mock.json');
 
-function getLanguages(username) {
-    return Promise.resolve(["JavaScript", "PLpgSQL", "HTML", "Java"]);
-
-    return fetch('https://api.github.com/users/' + username +'/repos')
-        .then(res => res.json())
+function getGithubData(username) {
+    return getGithubApi(username)
         .then(json => {
-            if (json.map) {
-                var data  = json.map(item => item.language).filter(item => item != null);
-                var languages = new Set(data);
-                
-                return languages;
-            } else {
-                return new Set();
+            const languages = getLanguages();
+            const repos = getRepos();
+
+            return {
+                languages,
+                repos
             }
         });
 }
 
-async function matchUsers(userId){
+function getRepos(json) {
+    if (json.map) {
+        var data = json.map(item => item.name).filter(item => item != null);
+        var Repos = new Set(data);
+
+        return Array.from(Repos);
+    } else {
+        return [];
+    }
+}
+
+function getLanguages(json) {
+    if (json.map) {
+        var data = json.map(item => item.language).filter(item => item != null);
+        var languages = new Set(data);
+
+        return Array.from(languages);
+    } else {
+        return [];
+    }
+}
+
+function getGithubApi(username) {
+    return Promise.resolve(githubResponseMock);
+
+    return fetch("https://api.github.com/users/" + username + "/repos")
+        .then(res => res.json());
+}
+
+async function matchUsers(userId) {
 
     const userRef = Users.getUser(userId);
 
@@ -28,18 +54,18 @@ async function matchUsers(userId){
 
     var userRest =  user.data().restaurants;
 
-    var response=[];
+    var response = [];
     Users.getAll().get()
         .then(users => {
             users.docs.filter(user=> user.id != userId).forEach(user => {
 
                 var commonlanguages = userLang.filter(value => {
                     var languages = user.data().languages
-                    
-                    if(languages && languages.includes(value)){
+
+                    if (languages && languages.includes(value)) {
                         return true
                     }
-                    return false       
+                    return false
                 });
 
                 var commonrestaurants = userRest.filter(value => {
@@ -70,6 +96,6 @@ async function matchUsers(userId){
 }
 
 module.exports = {
-    getLanguages,
+    getGithubData,
     matchUsers
 }
