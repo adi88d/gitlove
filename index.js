@@ -15,13 +15,17 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.get("/", (req, res) => res.send("Hello World!"));
 app.post("/updateProfile", (req, res) => {
-    const gitUsername = req.body.gitUsername;
-    const username = req.body.username;
-    const userId = req.body.userId;
+    const {
+            gitUsername,
+            username,
+            userId,
+            tenBisEmail,
+            tenBisPassword
+    } = req.body;
 
     Promise.all([
         getLanguages(gitUsername),
-        getRestaurants("someemail@gmail.com", "password")
+        getRestaurants(tenBisEmail, tenBisPassword)
     ]).then(results => {
         return Users.getUser(userId).set({
             languages: Array.from(results[0]),
