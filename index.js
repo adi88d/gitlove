@@ -1,5 +1,5 @@
 const { app } = require("./express.js");
-const { getLanguages } = require("./github-helper.js");
+const { getGithubData } = require("./github-helper.js");
 const { Users } = require("./collections/users");
 const { getRestaurants } = require("./tenbis/index");
 var bodyParser = require('body-parser');
@@ -24,12 +24,13 @@ app.post("/updateProfile", (req, res) => {
     } = req.body;
 
     Promise.all([
-        getLanguages(gitUsername),
+        getGithubData(gitUsername),
         getRestaurants(tenBisEmail, tenBisPassword)
     ]).then(results => {
         return Users.getUser(userId).update({
-            languages: Array.from(results[0]),
-            restaurants: results[1].map(r => r.id),
+            languages: results[0].languages,
+            repos: results[0].repos,
+            restaurants: results[1],
             gitUsername: gitUsername,
             name: username
         });

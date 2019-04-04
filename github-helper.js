@@ -5,8 +5,8 @@ const githubResponseMock = require('./github-response-mock.json');
 function getGithubData(username) {
     return getGithubApi(username)
         .then(json => {
-            const languages = getLanguages();
-            const repos = getRepos();
+            const languages = getLanguages(json);
+            const repos = getRepos(json);
 
             return {
                 languages,
