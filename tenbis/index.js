@@ -1,6 +1,17 @@
 const puppeteer = require('puppeteer');
 
-function getRestaurants(email, password) {
+async function getRestaurants(email, password) {
+    return new Promise(resolve => {
+        resolve([{ name: 'קפטן בורגר ', id: '25438' },
+        { name: 'גומבה', id: '24451' },
+        { name: 'גומבה', id: '24451' },
+        { name: 'ארומה בתל אביב', id: '1616' },
+        { name: 'סולי - Soli', id: '24584' },
+        { name: 'חור בהשכלה', id: '7524' },
+        { name: 'ארומה בתל אביב', id: '1616' },
+        { name: 'פליישמן מנחם בגין', id: '21656' }]);
+    });
+    
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto('https://www.10bis.co.il/next/');
