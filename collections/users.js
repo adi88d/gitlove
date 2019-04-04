@@ -1,8 +1,9 @@
 const {db} = require("../firebase");
 
 class Users {
-    static updateUser(userId, newData) {
-        return db.ref('users/' + userId).set(newData);
+    static getUser(userId) {
+        const collection = db.collection('users')
+        return collection.doc(userId);
     }
 }
 
