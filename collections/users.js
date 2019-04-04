@@ -15,8 +15,8 @@ class Users {
         const matches = user.matches || [];
         if (matches.indexOf(matchedId) === -1) {
             matches.push(matchedId);
-            user.update({ matches });
         }
+        return user.update({ matches });
     }
 }
 
