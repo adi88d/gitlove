@@ -24,11 +24,11 @@ app.get("/getMatches/:userId", (req, res) => {
 
 app.post("/updateProfile", (req, res) => {
     const {
-            gitUsername,
-            username,
-            userId,
-            tenBisEmail,
-            tenBisPassword
+        gitUsername,
+        username,
+        userId,
+        tenBisEmail,
+        tenBisPassword
     } = req.body;
 
     Promise.all([
@@ -37,15 +37,26 @@ app.post("/updateProfile", (req, res) => {
     ]).then(results => {
         return Users.getUser(userId).update({
             languages: results[0].languages,
+            isTab: results[0].isTabs,
             repos: results[0].repos,
             restaurants: results[1],
             gitUsername: gitUsername,
             name: username
         });
     })
-    .then(() => {
+        .then(() => {
+            res.send("cool")
+        })
+});
+
+app.post("/match", (req, res) => {
+
+    const {
+        userId,
+        matchedId
+    } = req.body;
+
+    Users.updateMatch(userId, matchedId).then(() => {
         res.send("cool")
     })
 });
-
-matchUsers('QABItfq1u84qrOi1HbQx')
