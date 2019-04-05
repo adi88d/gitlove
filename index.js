@@ -1,5 +1,5 @@
 const { app } = require("./express.js");
-const { getGithubData } = require("./github-helper.js");
+const { getGithubData, matchUsers } = require("./github-helper.js");
 const { Users } = require("./collections/users");
 const { getRestaurants } = require("./tenbis/index");
 var bodyParser = require('body-parser');
@@ -14,6 +14,14 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 app.get("/", (req, res) => res.send("Hello World!"));
+
+app.get("/getMatches/:userId", (req, res) => {
+    matchUsers(req.params.userId)
+    .then(results => {
+        res.send(results)
+    })
+});
+
 app.post("/updateProfile", (req, res) => {
     const {
             gitUsername,

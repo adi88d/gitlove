@@ -45,17 +45,15 @@ function getGithubApi(username) {
 }
 
 async function matchUsers(userId) {
-
     const userRef = Users.getUser(userId);
-
     const user = await userRef.get();
 
-    var userLang = user.data().languages;
-
-    var userRest =  user.data().restaurants;
+    var userLang = user.data().languages || [];
+    var userRest =  user.data().restaurants || [];
+    var userRepos =  user.data().repos || [];
 
     var response = [];
-    Users.getAll().get()
+    return await Users.getAll().get()
         .then(users => {
             users.docs.filter(user=> user.id != userId).forEach(user => {
 
@@ -76,13 +74,29 @@ async function matchUsers(userId) {
                     }
                     return false       
                 });
+
+                var commonrepos = userRepos.filter(value => {
+                    var repos = user.data().repos
+                    
+                    if(repos && repos.includes(value)){
+                        return true
+                    }
+                    return false       
+                });
+
+                finalRank = commonrestaurants.length + commonlanguages.length + commonrepos.length
+
                 response.push({
                     usedId: user.id,
-                    rank: commonrestaurants.length + commonlanguages.length,
+                    username:user.data().name,
+                    profilePic:user.data().profilePic,
+                    rank: finalRank,
                     resRank: commonrestaurants.length,
-                    langRank: commonlanguages.length,  
+                    langRank: commonlanguages.length,
+                    reposRank: commonrepos.length,  
                     restaurants:commonrestaurants,
                     languages:commonlanguages,
+                    repos: commonrepos
                 }) 
             });
 
@@ -90,7 +104,7 @@ async function matchUsers(userId) {
                 return b.rank - a.rank;
               });
 
-            console.log(response)
+            //console.log(response)
             return response;
         });
 }
