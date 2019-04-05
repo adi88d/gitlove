@@ -1,17 +1,26 @@
 const fetch = require('node-fetch');
 const { Users } = require("./collections/users");
-const githubResponseMock = require('./github-response-mock.json');
+const githubUserMock = require('./mocks/user.json');
+const githubEventsMock = require('./mocks/events.json');
 
 function getGithubData(username) {
+    
+    const result = {};
+
     return getGithubApi(username)
         .then(json => {
             const languages = getLanguages(json);
             const repos = getRepos(json);
 
-            return {
-                languages,
-                repos
-            }
+            result.languages = languages;
+            result.repos = repos;
+        })
+        .then(() => {
+            return getIsTabs(username);
+        })
+        .then(isTabs => {
+            result.isTabs = isTabs;
+            return result;
         });
 }
 
@@ -38,10 +47,37 @@ function getLanguages(json) {
 }
 
 function getGithubApi(username) {
-    return Promise.resolve(githubResponseMock);
+    return Promise.resolve(githubUserMock);
 
     return fetch("https://api.github.com/users/" + username + "/repos")
         .then(res => res.json());
+}
+
+function getIsTabs(username) {
+    // this code doesn't really work
+    return Promise.resolve(githubEventsMock)
+    // return fetch("https://api.github.com/users/" + username + "/events")
+    //     .then(res => res.json())
+        .then(data => {
+            return JSON.stringify(data, null, "\t");
+        })
+        .then(events => {
+            const urls = [events.match(/"https:\/\/api\.github\.com\/repos\/.*?\/.*?\/commits\/.*?"/g)[0]];
+            return Promise.all(urls.map(url => fetch(url.replace(/"/g, ""))))
+        })
+        .then(results => Promise.all(results.map(result => result.json())))
+        .then(results => {
+            return results.map(result => result.files);
+        })
+        .then(results => {
+            return [].concat.apply([], results);
+        })
+        .then(results => {
+            return results.map(result => result.patch);
+        })
+        .then(patches => {
+            return patches.some(patch => !!patch.match(/\t/))
+        });
 }
 
 async function matchUsers(userId) {

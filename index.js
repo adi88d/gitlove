@@ -29,6 +29,7 @@ app.post("/updateProfile", (req, res) => {
     ]).then(results => {
         return Users.getUser(userId).update({
             languages: results[0].languages,
+            isTab: results[0].isTabs,
             repos: results[0].repos,
             restaurants: results[1],
             gitUsername: gitUsername,
@@ -39,5 +40,3 @@ app.post("/updateProfile", (req, res) => {
         res.send("cool")
     })
 });
-
-matchUsers('QABItfq1u84qrOi1HbQx')
