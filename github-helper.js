@@ -103,9 +103,9 @@ async function matchUsers(userId) {
                 });
 
                 var commonrestaurants = userRest.filter(value => {
-                    var restaurant = user.data().restaurants
+                    var restaurants = user.data().restaurants
                     
-                    if(restaurant && restaurant.includes(value)){
+                    if(restaurants && restaurants.map(r=>r.id).includes(value.id)){
                         return true
                     }
                     return false       
@@ -120,7 +120,17 @@ async function matchUsers(userId) {
                     return false       
                 });
 
-                finalRank = commonrestaurants.length + commonlanguages.length + commonrepos.length
+                sum = commonrestaurants.length + commonlanguages.length + commonrepos.length
+
+                var finalRank=50;
+
+                if(sum>10){
+                    finalRank=75
+                }
+                if(sum>20){
+                    finalRank=100;
+                }
+
 
                 response.push({
                     usedId: user.id,
