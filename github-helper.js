@@ -122,13 +122,13 @@ async function matchUsers(userId) {
 
                 sum = commonrestaurants.length + commonlanguages.length + commonrepos.length
 
-                var finalRank=50;
+                var finalRank;
 
-                if(sum>10){
-                    finalRank=75
-                }
-                if(sum>20){
+                if(sum>40){
                     finalRank=100;
+                }
+                else{
+                    finalRank= Math.floor(Math.random() * (100 - 60) + 60)
                 }
 
 
