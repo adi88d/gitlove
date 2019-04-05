@@ -87,7 +87,7 @@ app.get("/getMatches/:userId", (req, res) => {
             restaurants: [ ],
             languages: [
             "giraffe",
-            "topolopompo"
+            "topolopompo",
             "php",
             "java"
             ],
