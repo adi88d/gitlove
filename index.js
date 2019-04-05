@@ -17,9 +17,9 @@ app.get("/", (req, res) => res.send("Hello World!"));
 
 app.get("/getMatches/:userId", (req, res) => {
     matchUsers(req.params.userId)
-    .then(results => {
-        res.send(results)
-    })
+        .then(results => {
+            res.send(results)
+        })
 });
 
 app.post("/updateProfile", (req, res) => {
@@ -56,7 +56,5 @@ app.post("/match", (req, res) => {
         matchedId
     } = req.body;
 
-    Users.updateMatch(userId, matchedId).then(() => {
-        res.send("cool")
-    })
+    Users.updateMatch(userId, matchedId).then(result => res.send(result));
 });
