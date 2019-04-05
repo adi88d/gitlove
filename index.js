@@ -16,11 +16,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.get("/", (req, res) => res.send("Hello World!"));
 app.post("/updateProfile", (req, res) => {
     const {
-            gitUsername,
-            username,
-            userId,
-            tenBisEmail,
-            tenBisPassword
+        gitUsername,
+        username,
+        userId,
+        tenBisEmail,
+        tenBisPassword
     } = req.body;
 
     Promise.all([
@@ -36,7 +36,19 @@ app.post("/updateProfile", (req, res) => {
             name: username
         });
     })
-    .then(() => {
+        .then(() => {
+            res.send("cool")
+        })
+});
+
+app.post("/match", (req, res) => {
+
+    const {
+        userId,
+        matchedId
+    } = req.body;
+
+    Users.updateMatch(userId, matchedId).then(() => {
         res.send("cool")
     })
 });
