@@ -165,10 +165,10 @@ app.get("/getMatches/:userId", (req, res) => {
                             reposRank: 3,
                             restaurants: [ ],
                             languages: [
-                            "cpp",
-                            "node-js",
-                            "python",
-                            "php"
+                            "dog-friendly",
+                            "ovad",
+                            "linux",
+                            "js"
                             ],
                             repos: [
                             "angular-translate",
