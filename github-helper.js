@@ -146,11 +146,14 @@ async function matchUsers(userId) {
                 }) 
             });
 
+            /*
             response.sort(function(a, b) {
                 return b.rank - a.rank;
               });
+              */
 
-            //console.log(response)
+              
+
             return response;
         });
 }
