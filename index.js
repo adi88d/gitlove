@@ -31,7 +31,8 @@ app.get("/getMatches/:userId", (req, res) => {
         reposRank: 3,
         restaurants: [ ],
         languages: [
-        "JavaScript",
+        "cat-lover",
+        "duck-rubber",
         "php",
         "html"
         ],
@@ -85,7 +86,8 @@ app.get("/getMatches/:userId", (req, res) => {
             reposRank: 3,
             restaurants: [ ],
             languages: [
-            "c-sharp",
+            "giraffe",
+            "topolopompo"
             "php",
             "java"
             ],
@@ -105,6 +107,7 @@ app.get("/getMatches/:userId", (req, res) => {
                 reposRank: 3,
                 restaurants: [ ],
                 languages: [
+                "fish-feeder",
                 "c-sharp",
                 "scala",
                 "go"
